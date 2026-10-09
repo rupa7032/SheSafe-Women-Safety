@@ -1,0 +1,372 @@
+
+## Step 2: Replace `style.css`
+
+Open `style.css`, press **Ctrl + A**, delete everything, and paste this code.
+
+<WritingBlock id="58315" variant="standard">```css
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #fff9fc;
+    color: #302638;
+    line-height: 1.6;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 8%;
+    background: #ffffff;
+    box-shadow: 0 2px 15px #54204412;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.logo {
+    color: #b62470;
+    font-size: 26px;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 22px;
+}
+
+nav a {
+    color: #493b4b;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+nav a:hover {
+    color: #c42b79;
+}
+
+.hero {
+    min-height: 490px;
+    padding: 75px 10%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 40px;
+    background: linear-gradient(120deg, #fff0f7, #f6eaff);
+}
+
+.hero-content {
+    max-width: 620px;
+}
+
+.tagline {
+    color: #bd2674;
+    font-size: 13px;
+    font-weight: bold;
+    letter-spacing: 2px;
+}
+
+.hero h1 {
+    font-size: clamp(42px, 6vw, 68px);
+    line-height: 1.12;
+    margin: 15px 0;
+}
+
+.hero h1 span {
+    color: #c42b79;
+}
+
+.hero-content > p:not(.tagline):not(.note) {
+    font-size: 17px;
+    margin-bottom: 25px;
+    color: #635568;
+}
+
+.hero-art {
+    font-size: clamp(120px, 20vw, 220px);
+    filter: drop-shadow(0 15px 20px #bd267430);
+}
+
+button, .call-button {
+    border: none;
+    border-radius: 9px;
+    padding: 13px 20px;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    margin: 6px 5px 6px 0;
+    transition: transform 0.2s, opacity 0.2s;
+}
+
+button:hover, .call-button:hover {
+    transform: translateY(-2px);
+    opacity: 0.9;
+}
+
+.sos-button {
+    background: #d7193f;
+    color: white;
+    font-size: 17px;
+    padding: 16px 28px;
+}
+
+.primary-button {
+    background: #bd2674;
+    color: white;
+}
+
+.secondary-button {
+    background: #f1e7f0;
+    color: #6b2853;
+}
+
+.call-button {
+    background: #17834a;
+    color: white;
+}
+
+.note {
+    color: #756a79;
+    font-size: 13px;
+    margin-top: 12px;
+}
+
+.section {
+    padding: 70px 8%;
+}
+
+.alternate {
+    background: #fff0f7;
+}
+
+.section-heading {
+    text-align: center;
+    max-width: 700px;
+    margin: 0 auto 30px;
+}
+
+.section-heading h2 {
+    font-size: clamp(28px, 4vw, 40px);
+    margin: 8px 0;
+}
+
+.section-heading > p:last-child {
+    color: #716477;
+}
+
+.content-card {
+    max-width: 650px;
+    margin: auto;
+    background: white;
+    padding: 30px;
+    border-radius: 18px;
+    box-shadow: 0 8px 35px #48203b12;
+    border: 1px solid #f2dce9;
+}
+
+.content-card h3 {
+    margin-bottom: 12px;
+}
+
+.location-icon {
+    font-size: 40px;
+}
+
+.coordinates {
+    background: #fff5fa;
+    border-radius: 10px;
+    padding: 15px;
+    margin: 20px 0;
+    overflow-wrap: anywhere;
+}
+
+.coordinates p {
+    margin: 7px 0;
+}
+
+.map-link {
+    display: block;
+    color: #a81d66;
+    font-weight: bold;
+    margin-top: 15px;
+}
+
+#contactForm {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+#contactForm label {
+    font-weight: bold;
+    margin-top: 8px;
+}
+
+#contactForm input {
+    width: 100%;
+    padding: 13px;
+    border: 1px solid #ddc9d7;
+    border-radius: 8px;
+    font-size: 16px;
+}
+
+#contactForm input:focus {
+    outline: 2px solid #d45b9c;
+    border-color: transparent;
+}
+
+#contactForm button {
+    align-self: flex-start;
+    margin-top: 10px;
+}
+
+.contact-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    padding: 15px 0;
+    border-bottom: 1px solid #eee0e9;
+}
+
+.contact-actions a {
+    color: #ad216a;
+    font-weight: bold;
+    margin-right: 12px;
+}
+
+.delete-button {
+    background: #ffe5e9;
+    color: #b4233d;
+    padding: 8px 12px;
+}
+
+.tips-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 22px;
+    max-width: 1000px;
+    margin: auto;
+}
+
+.tip-card {
+    padding: 28px;
+    background: white;
+    border-radius: 15px;
+    border: 1px solid #f0dce8;
+    box-shadow: 0 5px 20px #48203b0a;
+}
+
+.tip-card span {
+    font-size: 35px;
+}
+
+.tip-card h3 {
+    margin: 10px 0;
+    color: #a92168;
+}
+
+.tip-card p {
+    color: #716477;
+}
+
+.sos-panel {
+    margin: 30px auto;
+    max-width: 850px;
+    padding: 30px;
+    background: #fff0f0;
+    border: 2px solid #e63d50;
+    border-radius: 15px;
+}
+
+.sos-panel h2 {
+    color: #c51e38;
+    margin-bottom: 10px;
+}
+
+.emergency-banner {
+    text-align: center;
+    padding: 50px 20px;
+    background: #34243d;
+    color: white;
+}
+
+.emergency-banner h2 {
+    font-size: 30px;
+    margin-bottom: 10px;
+}
+
+.emergency-banner p {
+    margin: 10px 0;
+}
+
+.emergency-banner .note {
+    color: #e4d9e8;
+}
+
+footer {
+    padding: 25px;
+    text-align: center;
+    background: #211728;
+    color: white;
+}
+
+footer p + p {
+    color: #e8cddd;
+    font-size: 13px;
+}
+
+@media (max-width: 700px) {
+    header {
+        justify-content: center;
+        padding: 15px 5%;
+    }
+
+    nav {
+        justify-content: center;
+        gap: 12px;
+    }
+
+    nav a {
+        font-size: 14px;
+    }
+
+    .hero {
+        text-align: center;
+        flex-direction: column-reverse;
+        padding: 45px 7%;
+        gap: 10px;
+    }
+
+    .hero-art {
+        font-size: 100px;
+    }
+
+    .section {
+        padding: 50px 6%;
+    }
+
+    .tips-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .content-card {
+        padding: 22px;
+    }
+}

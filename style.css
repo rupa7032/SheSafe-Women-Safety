@@ -1,0 +1,62 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+css
+/* Hackathon SOS emergency panel */
+.emergency-panel {
+    max-width: 600px;
+    margin: 25px auto;
+    padding: 25px;
+    background: white;
+    border: 2px solid #d71946;
+    border-radius: 16px;
+    box-shadow: 0 8px 25px #8e245220;
+    text-align: center;
+}
+
+.emergency-panel h2 {
+    color: #b91c42;
+    margin-bottom: 15px;
+}
+
+.emergency-option {
+    margin: 18px 0;
+    padding: 18px;
+    background: #fff0f4;
+    border-radius: 12px;
+}
+
+.emergency-option h3 {
+    color: #8e2452;
+    margin-bottom: 8px;
+}
+
+.emergency-option .call {
+    display: inline-block;
+    margin-top: 10px;
+}
+
+.safety-note {
+    font-size: 14px;
+    color: #555;
+    margin: 18px 0;
+}
+
+.close-panel {
+    background: #555;
+    color: white;
+    margin-top: 10px;
+}
+
+.close-panel:hover {
+    background: #333;
+}
+
+.emergency-panel a:focus-visible,
+.emergency-panel button:focus-visible {
+    outline: 3px solid #222;
+    outline-offset: 3px;
+}
+
