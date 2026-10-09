@@ -1,372 +1,179 @@
-
-## Step 2: Replace `style.css`
-
-Open `style.css`, press **Ctrl + A**, delete everything, and paste this code.
-
-<WritingBlock id="58315" variant="standard">```css
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-html {
-    scroll-behavior: smooth;
-}
-
-body {
-    font-family: Arial, Helvetica, sans-serif;
-    background: #fff9fc;
-    color: #302638;
-    line-height: 1.6;
-}
-
-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 18px 8%;
-    background: #ffffff;
-    box-shadow: 0 2px 15px #54204412;
-    position: sticky;
-    top: 0;
-    z-index: 10;
-    gap: 20px;
-    flex-wrap: wrap;
-}
-
-.logo {
-    color: #b62470;
-    font-size: 26px;
-    font-weight: bold;
-    text-decoration: none;
-}
-
-nav {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 22px;
-}
-
-nav a {
-    color: #493b4b;
-    text-decoration: none;
-    font-weight: 600;
-}
-
-nav a:hover {
-    color: #c42b79;
-}
-
-.hero {
-    min-height: 490px;
-    padding: 75px 10%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 40px;
-    background: linear-gradient(120deg, #fff0f7, #f6eaff);
-}
-
-.hero-content {
-    max-width: 620px;
-}
-
-.tagline {
-    color: #bd2674;
-    font-size: 13px;
-    font-weight: bold;
-    letter-spacing: 2px;
-}
-
-.hero h1 {
-    font-size: clamp(42px, 6vw, 68px);
-    line-height: 1.12;
-    margin: 15px 0;
-}
-
-.hero h1 span {
-    color: #c42b79;
-}
-
-.hero-content > p:not(.tagline):not(.note) {
-    font-size: 17px;
-    margin-bottom: 25px;
-    color: #635568;
-}
-
-.hero-art {
-    font-size: clamp(120px, 20vw, 220px);
-    filter: drop-shadow(0 15px 20px #bd267430);
-}
-
-button, .call-button {
-    border: none;
-    border-radius: 9px;
-    padding: 13px 20px;
-    font-size: 15px;
-    font-weight: bold;
-    cursor: pointer;
-    text-decoration: none;
-    display: inline-block;
-    margin: 6px 5px 6px 0;
-    transition: transform 0.2s, opacity 0.2s;
-}
-
-button:hover, .call-button:hover {
-    transform: translateY(-2px);
-    opacity: 0.9;
-}
-
-.sos-button {
-    background: #d7193f;
-    color: white;
-    font-size: 17px;
-    padding: 16px 28px;
-}
-
-.primary-button {
-    background: #bd2674;
-    color: white;
-}
-
-.secondary-button {
-    background: #f1e7f0;
-    color: #6b2853;
-}
-
-.call-button {
-    background: #17834a;
-    color: white;
-}
-
-.note {
-    color: #756a79;
-    font-size: 13px;
-    margin-top: 12px;
-}
-
-.section {
-    padding: 70px 8%;
-}
-
-.alternate {
-    background: #fff0f7;
-}
-
-.section-heading {
-    text-align: center;
-    max-width: 700px;
-    margin: 0 auto 30px;
-}
-
-.section-heading h2 {
-    font-size: clamp(28px, 4vw, 40px);
-    margin: 8px 0;
-}
-
-.section-heading > p:last-child {
-    color: #716477;
-}
-
-.content-card {
-    max-width: 650px;
-    margin: auto;
-    background: white;
-    padding: 30px;
-    border-radius: 18px;
-    box-shadow: 0 8px 35px #48203b12;
-    border: 1px solid #f2dce9;
-}
-
-.content-card h3 {
-    margin-bottom: 12px;
-}
-
-.location-icon {
-    font-size: 40px;
-}
-
-.coordinates {
-    background: #fff5fa;
-    border-radius: 10px;
-    padding: 15px;
-    margin: 20px 0;
-    overflow-wrap: anywhere;
-}
-
-.coordinates p {
-    margin: 7px 0;
-}
-
-.map-link {
-    display: block;
-    color: #a81d66;
-    font-weight: bold;
-    margin-top: 15px;
-}
-
-#contactForm {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-#contactForm label {
-    font-weight: bold;
-    margin-top: 8px;
-}
-
-#contactForm input {
-    width: 100%;
-    padding: 13px;
-    border: 1px solid #ddc9d7;
-    border-radius: 8px;
-    font-size: 16px;
-}
-
-#contactForm input:focus {
-    outline: 2px solid #d45b9c;
-    border-color: transparent;
-}
-
-#contactForm button {
-    align-self: flex-start;
-    margin-top: 10px;
-}
-
-.contact-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 12px;
-    padding: 15px 0;
-    border-bottom: 1px solid #eee0e9;
-}
-
-.contact-actions a {
-    color: #ad216a;
-    font-weight: bold;
-    margin-right: 12px;
-}
-
-.delete-button {
-    background: #ffe5e9;
-    color: #b4233d;
-    padding: 8px 12px;
-}
-
-.tips-grid {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 22px;
-    max-width: 1000px;
-    margin: auto;
-}
-
-.tip-card {
-    padding: 28px;
-    background: white;
-    border-radius: 15px;
-    border: 1px solid #f0dce8;
-    box-shadow: 0 5px 20px #48203b0a;
-}
-
-.tip-card span {
-    font-size: 35px;
-}
-
-.tip-card h3 {
-    margin: 10px 0;
-    color: #a92168;
-}
-
-.tip-card p {
-    color: #716477;
-}
-
-.sos-panel {
-    margin: 30px auto;
-    max-width: 850px;
-    padding: 30px;
-    background: #fff0f0;
-    border: 2px solid #e63d50;
-    border-radius: 15px;
-}
-
-.sos-panel h2 {
-    color: #c51e38;
-    margin-bottom: 10px;
-}
-
-.emergency-banner {
-    text-align: center;
-    padding: 50px 20px;
-    background: #34243d;
-    color: white;
-}
-
-.emergency-banner h2 {
-    font-size: 30px;
-    margin-bottom: 10px;
-}
-
-.emergency-banner p {
-    margin: 10px 0;
-}
-
-.emergency-banner .note {
-    color: #e4d9e8;
-}
-
-footer {
-    padding: 25px;
-    text-align: center;
-    background: #211728;
-    color: white;
-}
-
-footer p + p {
-    color: #e8cddd;
-    font-size: 13px;
-}
-
-@media (max-width: 700px) {
-    header {
-        justify-content: center;
-        padding: 15px 5%;
-    }
-
-    nav {
-        justify-content: center;
-        gap: 12px;
-    }
-
-    nav a {
-        font-size: 14px;
-    }
-
-    .hero {
-        text-align: center;
-        flex-direction: column-reverse;
-        padding: 45px 7%;
-        gap: 10px;
-    }
-
-    .hero-art {
-        font-size: 100px;
-    }
-
-    .section {
-        padding: 50px 6%;
-    }
-
-    .tips-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .content-card {
-        padding: 22px;
-    }
-}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#8b3dff">
+  <meta name="description" content="SheSafe — women's safety resources, trusted contacts, and location sharing support.">
+  <title>SheSafe | Your Safety, Your Strength</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <header class="navbar">
+    <a class="brand" href="#home" aria-label="SheSafe home">
+      <span class="brand-icon">✦</span> SheSafe
+    </a>
+    <nav aria-label="Main navigation">
+      <a href="#features">Features</a>
+      <a href="#contacts">Trusted contacts</a>
+      <a href="#tips">Safety tips</a>
+    </nav>
+    <a class="nav-button" href="#sos">Get help</a>
+  </header>
+
+  <main>
+    <section class="hero" id="home">
+      <div class="hero-copy">
+        <span class="eyebrow">✦ YOUR SAFETY MATTERS</span>
+        <h1>Be bold.<br>Be safe.<br><span>Be unstoppable.</span></h1>
+        <p>
+          A little more confidence for every journey.
+          Keep important contacts close and learn simple ways
+          to put your safety first.
+        </p>
+        <div class="hero-actions">
+          <a class="button primary" href="#sos">Explore SOS <span>→</span></a>
+          <a class="button secondary" href="#features">Explore features</a>
+        </div>
+        <div class="hero-note">
+          <span class="note-dot"></span>
+          Preparedness starts with one small step.
+        </div>
+      </div>
+
+      <div class="hero-art" aria-label="Safety and support illustration">
+        <div class="art-circle"></div>
+        <div class="floating-card card-top">💜 You are not alone</div>
+        <div class="shield">
+          <span class="shield-star">✦</span>
+          <span class="shield-heart">♥</span>
+        </div>
+        <div class="floating-card card-bottom">✨ Stay aware. Stay empowered.</div>
+        <span class="spark spark-one">✦</span>
+        <span class="spark spark-two">✧</span>
+      </div>
+    </section>
+
+    <section class="stats" aria-label="Our message">
+      <div><strong>Safety</strong><span>First, always</span></div>
+      <div><strong>Confidence</strong><span>In every journey</span></div>
+      <div><strong>Community</strong><span>Stronger together</span></div>
+    </section>
+
+    <section class="section" id="features">
+      <div class="section-heading">
+        <span class="eyebrow">YOUR PERSONAL SAFETY SPACE</span>
+        <h2>Tools to help you feel <span>prepared.</span></h2>
+        <p>Simple resources for planning ahead and reaching the people you trust.</p>
+      </div>
+
+      <div class="feature-grid">
+        <article class="feature-card lavender">
+          <div class="feature-icon">🆘</div>
+          <h3>Emergency help</h3>
+          <p>Access the emergency call option and prepare a message for someone you trust.</p>
+          <a href="#sos">Open SOS section →</a>
+        </article>
+        <article class="feature-card pink">
+          <div class="feature-icon">📍</div>
+          <h3>My location</h3>
+          <p>Request your current location and prepare a link that you can share yourself.</p>
+          <a href="#location">Check location →</a>
+        </article>
+        <article class="feature-card peach">
+          <div class="feature-icon">🤝</div>
+          <h3>Trusted people</h3>
+          <p>Keep the names and phone numbers of the people you want to contact.</p>
+          <a href="#contacts">Manage contacts →</a>
+        </article>
+      </div>
+    </section>
+
+    <section class="section emergency-section" id="sos">
+      <div class="section-heading">
+        <span class="eyebrow">QUICK ACCESS</span>
+        <h2>Your safety, <span>within reach.</span></h2>
+        <p>Use these options when you need help. Choose the action that fits your situation.</p>
+      </div>
+
+      <div class="sos-panel">
+        <div class="sos-symbol">!</div>
+        <div class="sos-copy">
+          <h3>Need emergency assistance?</h3>
+          <p>If you are in immediate danger in India, call 112 if it is safe to do so. You can also contact a trusted person.</p>
+        </div>
+        <a class="button emergency-button" href="tel:112">Call 112</a>
+      </div>
+
+      <div class="message-panel">
+        <div>
+          <h3>Prepare a safety message</h3>
+          <p>Write a short message and open your SMS app to send it yourself.</p>
+        </div>
+        <textarea id="safetyMessage" rows="3" aria-label="Safety message">I need help. Please contact me as soon as possible.</textarea>
+        <button class="button primary" id="prepareMessage" type="button">Prepare SMS →</button>
+        <p class="status" id="messageStatus" role="status"></p>
+      </div>
+    </section>
+
+    <section class="section location-section" id="location">
+      <div class="location-card">
+        <div class="location-emoji">📍</div>
+        <div class="location-copy">
+          <span class="eyebrow">LOCATION SUPPORT</span>
+          <h2>Know where you are.</h2>
+          <p>Allow your browser to access your location to create a map link. You decide whether to share it.</p>
+          <button class="button primary" id="getLocation" type="button">Get my location</button>
+          <p class="status" id="locationStatus" role="status" aria-live="polite">Your location has not been requested.</p>
+          <a id="mapLink" class="text-link" href="#" target="_blank" rel="noopener noreferrer" hidden>Open my location on a map →</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section contacts-section" id="contacts">
+      <div class="section-heading">
+        <span class="eyebrow">YOUR SUPPORT CIRCLE</span>
+        <h2>People you <span>trust.</span></h2>
+        <p>Add contacts you may want to reach. Your contact list is saved in this browser on this device.</p>
+      </div>
+
+      <form class="contact-form" id="contactForm">
+        <label for="contactName">Contact name</label>
+        <input id="contactName" name="contactName" type="text" maxlength="60" placeholder="e.g. Family member" required>
+        <label for="contactPhone">Phone number</label>
+        <input id="contactPhone" name="contactPhone" type="tel" maxlength="20" placeholder="e.g. +91 9876543210" required>
+        <button class="button primary" type="submit">+ Add trusted contact</button>
+        <p class="status" id="contactStatus" role="status" aria-live="polite"></p>
+      </form>
+      <div class="contact-list" id="contactList" aria-live="polite"></div>
+    </section>
+
+    <section class="section tips-section" id="tips">
+      <div class="section-heading">
+        <span class="eyebrow">SMALL STEPS, BIG DIFFERENCE</span>
+        <h2>Everyday <span>safety tips.</span></h2>
+      </div>
+      <div class="tips-grid">
+        <article class="tip"><span>01</span><div><h3>Plan your journey</h3><p>Check your route and transport options before leaving.</p></div></article>
+        <article class="tip"><span>02</span><div><h3>Stay connected</h3><p>Consider telling someone you trust about your plans.</p></div></article>
+        <article class="tip"><span>03</span><div><h3>Trust your instincts</h3><p>If you feel unsafe, move toward a safer public place if possible.</p></div></article>
+        <article class="tip"><span>04</span><div><h3>Keep your phone ready</h3><p>Charge your phone and keep important contacts accessible.</p></div></article>
+      </div>
+    </section>
+
+    <section class="closing-banner">
+      <span>✦</span>
+      <h2>Your voice matters. Your safety matters.</h2>
+      <p>Stay aware, stay connected, and remember that asking for help is a strength.</p>
+      <a class="button white-button" href="#home">Back to top ↑</a>
+    </section>
+  </main>
+
+  <footer>
+    <a class="brand footer-brand" href="#home"><span class="brand-icon">✦</span> SheSafe</a>
+    <p>A student project created to promote women's safety awareness.</p>
+    <small>SheSafe is an informational website, not a replacement for emergency services.</small>
+  </footer>
+</body>
+</html>

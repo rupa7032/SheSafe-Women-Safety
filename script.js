@@ -1,276 +1,217 @@
-```javascript
 "use strict";
 
-let watchId = null;
-let currentLocation = null;
+const CONTACTS_KEY = "shesafe_trusted_contacts";
+const MAX_CONTACTS = 5;
 
-const CONTACT_STORAGE_KEY = "shesafe_trusted_contacts";
+const contactForm = document.getElementById("contactForm");
+const contactName = document.getElementById("contactName");
+const contactPhone = document.getElementById("contactPhone");
+const contactList = document.getElementById("contactList");
+const contactStatus = document.getElementById("contactStatus");
 
-function showSOS() {
-    document.getElementById("sosPanel").hidden = false;
-    document.getElementById("sosPanel").scrollIntoView({
-        behavior: "smooth",
-        block: "center"
-    });
+function loadContacts() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(CONTACTS_KEY) || "[]");
+    return Array.isArray(saved)
+      ? saved.filter(item =>
+          item &&
+          typeof item.name === "string" &&
+          typeof item.phone === "string"
+        ).slice(0, MAX_CONTACTS)
+      : [];
+  } catch (error) {
+    return [];
+  }
 }
 
-function closeSOS() {
-    document.getElementById("sosPanel").hidden = true;
+let contacts = loadContacts();
+
+function saveContacts() {
+  try {
+    localStorage.setItem(CONTACTS_KEY, JSON.stringify(contacts));
+    return true;
+  } catch (error) {
+    contactStatus.textContent =
+      "Could not save contacts. Check your browser storage settings.";
+    return false;
+  }
 }
 
-function startTracking() {
-    const status = document.getElementById("locationStatus");
-
-    if (!("geolocation" in navigator)) {
-        status.textContent = "Your browser does not support GPS location.";
-        return;
-    }
-
-    if (watchId !== null) {
-        status.textContent = "GPS tracking is already running.";
-        return;
-    }
-
-    status.textContent = "Requesting location permission...";
-
-    watchId = navigator.geolocation.watchPosition(
-        function (position) {
-            currentLocation = {
-                latitude: position.coords.latitude,
-                longitude: position.coords.longitude,
-                accuracy: position.coords.accuracy
-            };
-
-            document.getElementById("latitude").textContent =
-                currentLocation.latitude.toFixed(6);
-
-            document.getElementById("longitude").textContent =
-                currentLocation.longitude.toFixed(6);
-
-            document.getElementById("accuracy").textContent =
-                Math.round(currentLocation.accuracy) + " metres";
-
-            const mapLink = document.getElementById("mapLink");
-            mapLink.href =
-                "https://www.google.com/maps?q=" +
-                currentLocation.latitude + "," +
-                currentLocation.longitude;
-            mapLink.hidden = false;
-
-            status.textContent =
-                "Location updated successfully. Tracking is active.";
-        },
-        function (error) {
-            if (watchId !== null) {
-                navigator.geolocation.clearWatch(watchId);
-                watchId = null;
-            }
-
-            const messages = {
-                1: "Location permission was denied. Allow location access in your browser settings.",
-                2: "Your location is currently unavailable. Check your device location settings.",
-                3: "Location request timed out. Please try again."
-            };
-
-            status.textContent =
-                messages[error.code] || "Unable to get your location.";
-        },
-        {
-            enableHighAccuracy: true,
-            maximumAge: 0,
-            timeout: 15000
-        }
-    );
-}
-
-function stopTracking() {
-    if (watchId !== null) {
-        navigator.geolocation.clearWatch(watchId);
-        watchId = null;
-    }
-
-    document.getElementById("locationStatus").textContent =
-        "Location tracking is stopped.";
-}
-
-function getContacts() {
-    try {
-        const saved = localStorage.getItem(CONTACT_STORAGE_KEY);
-        const contacts = saved ? JSON.parse(saved) : [];
-        return Array.isArray(contacts) ? contacts : [];
-    } catch (error) {
-        return [];
-    }
-}
-
-function saveContacts(contacts) {
-    try {
-        localStorage.setItem(
-            CONTACT_STORAGE_KEY,
-            JSON.stringify(contacts)
-        );
-        return true;
-    } catch (error) {
-        document.getElementById("contactStatus").textContent =
-            "Unable to save contacts in this browser.";
-        return false;
-    }
-}
-
-function normalizePhone(phone) {
-    return phone.replace(/[^\d+]/g, "");
+function makeButton(label, className, action) {
+  const button = document.createElement("button");
+  button.type = "button";
+  button.className = className;
+  button.textContent = label;
+  button.addEventListener("click", action);
+  return button;
 }
 
 function renderContacts() {
-    const list = document.getElementById("contactList");
-    const contacts = getContacts();
+  contactList.replaceChildren();
 
-    list.replaceChildren();
+  if (contacts.length === 0) {
+    const empty = document.createElement("p");
+    empty.className = "status";
+    empty.textContent = "No trusted contacts added yet.";
+    contactList.appendChild(empty);
+    return;
+  }
 
-    if (contacts.length === 0) {
-        const emptyMessage = document.createElement("p");
-        emptyMessage.textContent = "No trusted contacts saved yet.";
-        list.appendChild(emptyMessage);
-        return;
-    }
+  contacts.forEach((contact, index) => {
+    const item = document.createElement("article");
+    item.className = "contact-item";
 
-    contacts.forEach(function (contact, index) {
-        const item = document.createElement("div");
-        item.className = "contact-item";
+    const avatar = document.createElement("div");
+    avatar.className = "contact-avatar";
+    avatar.textContent = contact.name.trim().charAt(0).toUpperCase() || "?";
 
-        const details = document.createElement("div");
-        const name = document.createElement("strong");
-        name.textContent = contact.name;
+    const info = document.createElement("div");
+    info.className = "contact-info";
 
-        const phone = document.createElement("p");
-        phone.textContent = contact.phone;
+    const name = document.createElement("strong");
+    name.textContent = contact.name;
 
-        details.appendChild(name);
-        details.appendChild(phone);
+    const phone = document.createElement("span");
+    phone.textContent = contact.phone;
 
-        const actions = document.createElement("div");
-        actions.className = "contact-actions";
+    info.append(name, phone);
 
-        const callLink = document.createElement("a");
-        callLink.href = "tel:" + normalizePhone(contact.phone);
-        callLink.textContent = "Call";
+    const actions = document.createElement("div");
+    actions.className = "contact-actions";
 
-        const smsLink = document.createElement("a");
-        smsLink.href = "sms:" + normalizePhone(contact.phone);
-        smsLink.textContent = "SMS";
-
-        const deleteButton = document.createElement("button");
-        deleteButton.type = "button";
-        deleteButton.className = "delete-button";
-        deleteButton.textContent = "Remove";
-        deleteButton.addEventListener("click", function () {
-            deleteContact(index);
-        });
-
-        actions.appendChild(callLink);
-        actions.appendChild(smsLink);
-        actions.appendChild(deleteButton);
-
-        item.appendChild(details);
-        item.appendChild(actions);
-        list.appendChild(item);
+    const callButton = makeButton("Call", "small-button", () => {
+      window.location.href = "tel:" + contact.phone.replace(/[^\d+]/g, "");
     });
-}
 
-function deleteContact(index) {
-    const contacts = getContacts();
-    contacts.splice(index, 1);
+    const smsButton = makeButton("SMS", "small-button", () => {
+      const message = "I may need help. Please contact me as soon as possible.";
+      const url = "sms:" + contact.phone.replace(/[^\d+]/g, "") +
+        "?body=" + encodeURIComponent(message);
+      window.location.href = url;
+    });
 
-    if (saveContacts(contacts)) {
-        document.getElementById("contactStatus").textContent =
-            "Contact removed.";
+    const deleteButton = makeButton("Remove", "small-button delete-button", () => {
+      contacts.splice(index, 1);
+      if (saveContacts()) {
         renderContacts();
-    }
+        contactStatus.textContent = "Contact removed.";
+      }
+    });
+
+    actions.append(callButton, smsButton, deleteButton);
+    item.append(avatar, info, actions);
+    contactList.appendChild(item);
+  });
 }
 
-document.getElementById("contactForm").addEventListener(
-    "submit",
-    function (event) {
-        event.preventDefault();
+contactForm.addEventListener("submit", event => {
+  event.preventDefault();
 
-        const nameInput = document.getElementById("contactName");
-        const phoneInput = document.getElementById("contactPhone");
+  const name = contactName.value.trim();
+  const phone = contactPhone.value.trim();
 
-        const name = nameInput.value.trim();
-        const phone = phoneInput.value.trim();
+  if (!name || !phone) {
+    contactStatus.textContent = "Please enter a name and phone number.";
+    return;
+  }
 
-        if (!name || !phone || !/[0-9]{5,}/.test(phone)) {
-            document.getElementById("contactStatus").textContent =
-                "Enter a name and a valid phone number.";
-            return;
-        }
+  // Accept common international phone-number formats.
+  if (!/^\+?[\d\s().-]{7,20}$/.test(phone)) {
+    contactStatus.textContent = "Please enter a valid phone number.";
+    return;
+  }
 
-        const contacts = getContacts();
+  if (contacts.length >= MAX_CONTACTS) {
+    contactStatus.textContent =
+      "You can save up to five trusted contacts. Remove one to add another.";
+    return;
+  }
 
-        if (contacts.length >= 5) {
-            document.getElementById("contactStatus").textContent =
-                "You can save up to five trusted contacts. Remove one first.";
-            return;
-        }
+  contacts.push({ name, phone });
 
-        contacts.push({
-            name: name,
-            phone: phone
-        });
+  if (saveContacts()) {
+    renderContacts();
+    contactForm.reset();
+    contactStatus.textContent = "Trusted contact saved in this browser.";
+  } else {
+    contacts.pop();
+  }
+});
 
-        if (saveContacts(contacts)) {
-            nameInput.value = "";
-            phoneInput.value = "";
-            document.getElementById("contactStatus").textContent =
-                "Trusted contact saved successfully.";
-            renderContacts();
-        }
+// Prepare an SMS for the first saved trusted contact.
+// Your messaging app must still be opened and the message sent by you.
+document.getElementById("prepareMessage").addEventListener("click", () => {
+  const status = document.getElementById("messageStatus");
+  const message = document.getElementById("safetyMessage").value.trim();
+
+  if (!message) {
+    status.textContent = "Please enter a message first.";
+    return;
+  }
+
+  if (contacts.length === 0) {
+    status.textContent =
+      "Add a trusted contact first, then you can prepare an SMS.";
+    return;
+  }
+
+  const phone = contacts[0].phone.replace(/[^\d+]/g, "");
+  const smsUrl = "sms:" + phone + "?body=" + encodeURIComponent(message);
+
+  status.textContent =
+    "Opening your messaging app for " + contacts[0].name +
+    ". Review the message and send it yourself.";
+
+  window.location.href = smsUrl;
+});
+
+// Request the current location only after the user presses the button.
+document.getElementById("getLocation").addEventListener("click", () => {
+  const status = document.getElementById("locationStatus");
+  const mapLink = document.getElementById("mapLink");
+
+  mapLink.hidden = true;
+
+  if (!("geolocation" in navigator)) {
+    status.textContent = "This browser does not support location access.";
+    return;
+  }
+
+  status.textContent = "Requesting location permission…";
+
+  navigator.geolocation.getCurrentPosition(
+    position => {
+      const latitude = position.coords.latitude;
+      const longitude = position.coords.longitude;
+
+      const mapUrl =
+        "https://www.google.com/maps?q=" +
+        encodeURIComponent(latitude + "," + longitude);
+
+      mapLink.href = mapUrl;
+      mapLink.hidden = false;
+
+      status.textContent =
+        "Location found. Latitude: " + latitude.toFixed(5) +
+        ", longitude: " + longitude.toFixed(5) +
+        ". Use the map link if you want to view or share it.";
+    },
+    error => {
+      const messages = {
+        1: "Location permission was denied. Allow location access in your browser settings and try again.",
+        2: "Your location is currently unavailable. Check your device location settings and try again.",
+        3: "The location request timed out. Please try again."
+      };
+
+      status.textContent =
+        messages[error.code] || "Could not get your location. Please try again.";
+    },
+    {
+      enableHighAccuracy: true,
+      timeout: 15000,
+      maximumAge: 0
     }
-);
-
-function prepareEmergencyMessage() {
-    const messageElement = document.getElementById("sosMessage");
-    const contacts = getContacts();
-
-    let message = "I need help. Please contact me as soon as possible.";
-
-    if (currentLocation) {
-        const mapUrl =
-            "https://www.google.com/maps?q=" +
-            currentLocation.latitude + "," +
-            currentLocation.longitude;
-
-        message += " My current location: " + mapUrl;
-    } else {
-        message += " My location is not available in SheSafe yet.";
-    }
-
-    if (contacts.length === 0) {
-        messageElement.textContent =
-            "No trusted contacts are saved. Save a contact below to prepare an emergency message.";
-        return;
-    }
-
-    const smsUrl =
-        "sms:?body=" + encodeURIComponent(message);
-
-    messageElement.textContent =
-        "Your emergency message is ready. Choose a recipient in your messaging app and check the message before sending.";
-
-    const link = document.createElement("a");
-    link.href = smsUrl;
-    link.textContent = "Open SMS app";
-    link.className = "map-link";
-
-    const oldLink = document.getElementById("emergencySmsLink");
-    if (oldLink) {
-        oldLink.remove();
-    }
-
-    link.id = "emergencySmsLink";
-    messageElement.appendChild(document.createTextNode(" "));
-    messageElement.appendChild(link);
-}
+  );
+});
 
 renderContacts();
-```
